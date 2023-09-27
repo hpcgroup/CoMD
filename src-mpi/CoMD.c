@@ -128,7 +128,7 @@ int main(int argc, char** argv)
 
       iStep += printRate;
    }
-   hpctoolkit_sampling_end();
+   hpctoolkit_sampling_stop();
    profileStop(loopTimer);
 
    sumAtoms(sim);
