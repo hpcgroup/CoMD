@@ -39,6 +39,7 @@
 ///
 /// \subpage pg_whats_new
 
+#include <hpctoolkit.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -83,6 +84,8 @@ static void sanityChecks(Command cmd, double cutoff, double latticeConst, char l
 
 int main(int argc, char** argv)
 {
+   // so that hpctoolkit doesn't sample the entire part
+   hpctoolkit_sampling_stop();
    // Prolog
    initParallel(&argc, &argv);
    profileStart(totalTimer);
@@ -110,6 +113,7 @@ int main(int argc, char** argv)
    const int printRate = sim->printRate;
    int iStep = 0;
    profileStart(loopTimer);
+   hpctoolkit_sampling_start();
    for (; iStep<nSteps;)
    {
       startTimer(commReduceTimer);
@@ -124,6 +128,7 @@ int main(int argc, char** argv)
 
       iStep += printRate;
    }
+   hpctoolkit_sampling_end();
    profileStop(loopTimer);
 
    sumAtoms(sim);
